@@ -22,7 +22,7 @@ jobs:
         type: string
       resource_class:
         type: string
-        default: large
+        default: xlarge
     machine:
       image: ubuntu-2204:current
     environment:
@@ -49,7 +49,7 @@ jobs:
         default: "apt-get install -y s3cmd"
       resource_class:
         type: string
-        default: large
+        default: xlarge
       debian_package_architecture:
         type: string
         default: "amd64"
