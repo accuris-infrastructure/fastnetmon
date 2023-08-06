@@ -373,7 +373,7 @@ bool process_sflow_flow_sample(uint8_t* data_pointer,
 
             if (sflow_raw_protocol_header.header_protocol == SFLOW_HEADER_PROTOCOL_ETHERNET) {
 
-                bool unpack_gre = false;
+                bool unpack_gre = true;
 
                 // We could enable this new parser for testing purpose
                 auto result = parse_raw_packet_to_simple_packet_full_ng(header_payload_pointer,
