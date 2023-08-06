@@ -30,7 +30,7 @@ if (defined($ENV{'CI'}) && $ENV{'CI'}) {
     $install_log_path = "/tmp/fastnetmon_install.log";
 }
 
-my $fastnetmon_git_path = 'https://github.com/pavel-odintsov/fastnetmon.git';
+my $fastnetmon_git_path = 'https://github.com/accuris-infrastructure/fastnetmon.git';
 
 my $temp_folder_for_building_project = `mktemp -d /tmp/fastnetmon.build.dir.XXXXXXXXXX`;
 chomp $temp_folder_for_building_project;
