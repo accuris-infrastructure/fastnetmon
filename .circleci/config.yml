@@ -88,7 +88,7 @@ jobs:
           command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro -v /data:/data:rw --privileged --cap-add SYS_ADMIN  --name linux_priviledged_container debian:bullseye tail -f /dev/null
       - run: sudo docker exec -it linux_priviledged_container apt-get update; true
       - run: sudo docker exec -it linux_priviledged_container apt install -y dpkg-dev git pbuilder
-      - run: sudo docker exec -it linux_priviledged_container git clone https://github.com/pavel-odintsov/fastnetmon
+      - run: sudo docker exec -it linux_priviledged_container git clone https://github.com/accuris-infrastructure/fastnetmon
       - run: sudo docker exec -it linux_priviledged_container git clone https://salsa.debian.org/debian/fastnetmon.git fastnetmon-debian-salsa
       - run: sudo docker exec -it linux_priviledged_container rm -f fastnetmon-debian-salsa/debian/patches/series
       - run: sudo docker exec -it linux_priviledged_container tar -czf fastnetmon_$(sudo docker exec -it linux_priviledged_container head -n 1 fastnetmon-debian-salsa/debian/changelog|awk '{print $2}'|sed 's/[()]//g' | sed -E 's/(\-[0-9]+)?$//').orig.tar.gz fastnetmon
@@ -113,11 +113,11 @@ jobs:
       image: ubuntu-2204:current
     steps:
      - checkout
-     - run: docker build -t ghcr.io/pavel-odintsov/fastnetmon-community:1.2.4 -t ghcr.io/pavel-odintsov/fastnetmon-community:latest - < src/Dockerfile
+     - run: docker build -t ghcr.io/accuris-infrastructure/fastnetmon-community:1.2.5 -t ghcr.io/accuris-infrastructure/fastnetmon-community:latest - < src/Dockerfile
      - run: sudo docker images
-     - run: echo $CR_PAT | sudo docker login ghcr.io -u pavel-odintsov --password-stdin
-     - run: sudo docker push ghcr.io/pavel-odintsov/fastnetmon-community:1.2.4
-     - run: sudo docker push ghcr.io/pavel-odintsov/fastnetmon-community:latest
+     - run: echo $CR_PAT | sudo docker login ghcr.io -u accuris-infrastructure --password-stdin
+     - run: sudo docker push ghcr.io/accuris-infrastructure/fastnetmon-community:1.2.5
+     - run: sudo docker push ghcr.io/accuris-infrastructure/fastnetmon-community:latest
   build_gce:
     machine:
       # We use this image because it uses GCE instead of AWS for testing
@@ -133,7 +133,7 @@ jobs:
     resource_class: arm.large
     steps:
      - checkout
-     - run: docker build --build-arg installer_file_name=installer_arm64 -t ghcr.io/pavel-odintsov/fastnetmon-community:1.2.3 -t ghcr.io/pavel-odintsov/fastnetmon-community:latest - < src/Dockerfile
+     - run: docker build --build-arg installer_file_name=installer_arm64 -t ghcr.io/accuris-infrastructure/fastnetmon-community:1.2.3 -t ghcr.io/accuris-infrastructure/fastnetmon-community:latest - < src/Dockerfile
      - run: sudo docker images
   build_fedora_upstream:
     parameters:
@@ -215,7 +215,7 @@ jobs:
       - run: sudo docker run --name  linux_docker -d -t << parameters.docker_image >>
       - run: sudo docker exec linux_docker apt-get update; true
       - run: sudo docker exec --env DEBIAN_FRONTEND linux_docker apt-get install -y perl wget git cmake g++ make liblog4cpp5-dev libhiredis-dev libmongoc-dev libbpf-dev libgrpc++-dev libprotobuf-dev protobuf-compiler libcapnp-dev capnproto libssl-dev protobuf-compiler-grpc libncurses5-dev libpcap-dev pkg-config  libboost-atomic-dev libboost-chrono-dev  libboost-date-time-dev libboost-program-options-dev libboost-regex-dev libboost-system-dev libboost-thread-dev
-      - run: sudo docker exec linux_docker git clone https://github.com/pavel-odintsov/fastnetmon.git
+      - run: sudo docker exec linux_docker git clone https://github.com/accuris-infrastructure/fastnetmon.git
       - run: sudo docker exec linux_docker mkdir fastnetmon/src/build
       - run: sudo docker exec linux_docker cmake -S fastnetmon/src -B fastnetmon/src/build -DENABLE_AF_XDP_SUPPORT=FALSE
       - run: sudo docker exec linux_docker make -C fastnetmon/src/build -j
@@ -246,7 +246,7 @@ jobs:
       - run: sudo docker exec linux_docker apt-get update; true
       - run: sudo docker exec linux_docker apt-get install -y perl wget git
       - run: sudo docker exec --env DEBIAN_FRONTEND linux_docker bash -c "<< parameters.s3cmd_install_command >>"
-      - run: sudo docker exec linux_docker git clone https://github.com/pavel-odintsov/fastnetmon.git
+      - run: sudo docker exec linux_docker git clone https://github.com/accuris-infrastructure/fastnetmon.git
       - run:
           name: install_gcc
           no_output_timeout: 120m 
@@ -284,7 +284,7 @@ jobs:
     steps:
       - run: sudo docker run --name  linux_docker -d -t << parameters.docker_image >>
       - run: sudo docker exec linux_docker yum install -y perl wget python3-pip perl-Archive-Tar git
-      - run: sudo docker exec linux_docker git clone https://github.com/pavel-odintsov/fastnetmon.git
+      - run: sudo docker exec linux_docker git clone https://github.com/accuris-infrastructure/fastnetmon.git
       - run: sudo docker exec linux_docker pip3 install s3cmd
       - run:
           name: install_gcc
