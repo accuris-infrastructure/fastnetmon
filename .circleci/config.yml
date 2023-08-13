@@ -72,48 +72,48 @@ jobs:
   #     - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   #     - run: cp src/packaging/homebrew/fastnetmon.rb /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/fastnetmon.rb
   #     - run: brew install --build-from-source --HEAD --verbose --debug fastnetmon
-  build_debian_upstream_package:
-    machine:
-      image: ubuntu-2204:current
-    resource_class: large
-    parameters:
-      docker_image:
-        type: string
-      debian_codename:
-        type: string
-    steps:
-      - run:
-          name: Create folder to share data between host and Docker container with relaxed permissions to allow use of save / restore cache logic
-          command: sudo mkdir /data; sudo chmod 777 /data
-      - run:
-          name: Docker with priviledged mode to run chroot inside and we use tail -f to keep container running
-          command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro -v /data:/data:rw --privileged --cap-add SYS_ADMIN  --name linux_priviledged_container << parameters.docker_image >> tail -f /dev/null
-      - run: sudo docker exec -it linux_priviledged_container apt-get update; true
-      - run:
-          name: Explicitly specify mirror to avoid pbuilder failure on configuration step
-          command: echo "MIRRORSITE=http://http.us.debian.org/debian"|  sudo docker exec -i linux_priviledged_container tee /etc/pbuilderrc
-      - run: sudo docker exec -it linux_priviledged_container cat /etc/pbuilderrc
-      - run: sudo docker exec -it linux_priviledged_container apt install -y dpkg-dev git pbuilder
-      - run: sudo docker exec -it linux_priviledged_container git clone https://github.com/accuris-infrastructure/fastnetmon
-      - run: sudo docker exec -it linux_priviledged_container git clone https://salsa.debian.org/debian/fastnetmon.git fastnetmon-debian-salsa
-      - run: sudo docker exec -it linux_priviledged_container rm -f fastnetmon-debian-salsa/debian/patches/series
-      - run: sudo docker exec -it linux_priviledged_container tar -czf fastnetmon_$(sudo docker exec -it linux_priviledged_container head -n 1 fastnetmon-debian-salsa/debian/changelog|awk '{print $2}'|sed 's/[()]//g' | sed -E 's/(\-[0-9]+)?$//').orig.tar.gz fastnetmon
-      - run: sudo docker exec -it linux_priviledged_container ls -la
-      - run: sudo docker exec -it linux_priviledged_container bash -c "cd fastnetmon && rm -rf debian && cp -a ../fastnetmon-debian-salsa/debian/ . && dpkg-buildpackage -S -sa -d"
-      - run:
-          name: List produced source files
-          command: sudo docker exec -it linux_priviledged_container ls -la
-      - run:
-          name: Show content of data folder and permissions for it
-          command: ls -la /data
-      - run:
-          name: Check that we have anything in data folder on VM
-          command: ls -la /data
-      - run:
-          name: "Run pbuilder run Docker if we have no image in place"
-          command: "sudo docker exec -it linux_priviledged_container pbuilder --create --basetgz /data/debian_base.tgz --distribution << parameters.debian_codename >>"
-      - run: ls -la /data
-      - run: sudo docker exec -it linux_priviledged_container pbuilder --build --basetgz /data/debian_base.tgz --debbuildopts "-sa" /fastnetmon_$(sudo docker exec -it linux_priviledged_container head -n 1 fastnetmon-debian-salsa/debian/changelog|awk '{print $2}'|sed 's/[()]//g').dsc
+  # build_debian_upstream_package:
+  #   machine:
+  #     image: ubuntu-2204:current
+  #   resource_class: large
+  #   parameters:
+  #     docker_image:
+  #       type: string
+  #     debian_codename:
+  #       type: string
+  #   steps:
+  #     - run:
+  #         name: Create folder to share data between host and Docker container with relaxed permissions to allow use of save / restore cache logic
+  #         command: sudo mkdir /data; sudo chmod 777 /data
+  #     - run:
+  #         name: Docker with priviledged mode to run chroot inside and we use tail -f to keep container running
+  #         command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro -v /data:/data:rw --privileged --cap-add SYS_ADMIN  --name linux_priviledged_container << parameters.docker_image >> tail -f /dev/null
+  #     - run: sudo docker exec -it linux_priviledged_container apt-get update; true
+  #     - run:
+  #         name: Explicitly specify mirror to avoid pbuilder failure on configuration step
+  #         command: echo "MIRRORSITE=http://http.us.debian.org/debian"|  sudo docker exec -i linux_priviledged_container tee /etc/pbuilderrc
+  #     - run: sudo docker exec -it linux_priviledged_container cat /etc/pbuilderrc
+  #     - run: sudo docker exec -it linux_priviledged_container apt install -y dpkg-dev git pbuilder
+  #     - run: sudo docker exec -it linux_priviledged_container git clone https://github.com/accuris-infrastructure/fastnetmon
+  #     - run: sudo docker exec -it linux_priviledged_container git clone https://salsa.debian.org/debian/fastnetmon.git fastnetmon-debian-salsa
+  #     - run: sudo docker exec -it linux_priviledged_container rm -f fastnetmon-debian-salsa/debian/patches/series
+  #     - run: sudo docker exec -it linux_priviledged_container tar -czf fastnetmon_$(sudo docker exec -it linux_priviledged_container head -n 1 fastnetmon-debian-salsa/debian/changelog|awk '{print $2}'|sed 's/[()]//g' | sed -E 's/(\-[0-9]+)?$//').orig.tar.gz fastnetmon
+  #     - run: sudo docker exec -it linux_priviledged_container ls -la
+  #     - run: sudo docker exec -it linux_priviledged_container bash -c "cd fastnetmon && rm -rf debian && cp -a ../fastnetmon-debian-salsa/debian/ . && dpkg-buildpackage -S -sa -d"
+  #     - run:
+  #         name: List produced source files
+  #         command: sudo docker exec -it linux_priviledged_container ls -la
+  #     - run:
+  #         name: Show content of data folder and permissions for it
+  #         command: ls -la /data
+  #     - run:
+  #         name: Check that we have anything in data folder on VM
+  #         command: ls -la /data
+  #     - run:
+  #         name: "Run pbuilder run Docker if we have no image in place"
+  #         command: "sudo docker exec -it linux_priviledged_container pbuilder --create --basetgz /data/debian_base.tgz --distribution << parameters.debian_codename >>"
+  #     - run: ls -la /data
+  #     - run: sudo docker exec -it linux_priviledged_container pbuilder --build --basetgz /data/debian_base.tgz --debbuildopts "-sa" /fastnetmon_$(sudo docker exec -it linux_priviledged_container head -n 1 fastnetmon-debian-salsa/debian/changelog|awk '{print $2}'|sed 's/[()]//g').dsc
   # build_docker_x86_64:
   #   machine:
   #     image: ubuntu-2204:current
@@ -408,10 +408,10 @@ workflows:
       #     name: "Build Docker image on x86_64 platform"
       # - build_docker_arm64:
       #    name: "Build Docker image on ARM64 platform"
-      - build_debian_upstream_package:
-          name: "Debian Sid Upstream Build"
-          debian_codename: "sid"
-          docker_image: "debian:bookworm"
+      # - build_debian_upstream_package:
+      #     name: "Debian Sid Upstream Build"
+      #     debian_codename: "sid"
+      #     docker_image: "debian:bookworm"
       # To offer great developer experience we ensure that FastNetMon can be built on latest Ubuntu LTS 
       - build_debian_system_dependencies:
           docker_image: "ubuntu:jammy"
