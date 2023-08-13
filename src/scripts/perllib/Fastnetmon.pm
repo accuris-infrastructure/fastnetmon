@@ -56,7 +56,7 @@ my $gcc_version = '12.1.0';
 #
 # Storage Object Creator permissions allow upload but do not allow replacement of same file and that's exactly what we need
 #
-my $s3_bucket_binary_dependency_name = 'fastnetmon_community_binary_dependencies';
+my $s3_bucket_binary_dependency_name = 'accuris-fastnetmon-dependencies';
 
 # We are using this for Boost build system
 # 5.3 instead of 5.3.0
@@ -129,12 +129,12 @@ sub get_library_binary_build_from_google_storage {
 
     # print "Will use following path to retrieve dependency: $binary_path\n";
     my $download_file_return_code =
-        system("s3cmd --disable-multipart  --host=storage.googleapis.com --host-bucket=\"%(bucket).storage.googleapis.com\" get $binary_path /tmp/$dependency_archive_name >/dev/null 2>&1");
+        system("s3cmd --disable-multipart --host=s3.us-east-005.backblazeb2.com get $binary_path /tmp/$dependency_archive_name >/dev/null 2>&1");
 
     if ($download_file_return_code != 0) {
         my $real_exit_code = $download_file_return_code >> 8;
 
-        print "Cannot download dependency file from Google Storage. Exit code: $real_exit_code\n";
+        print "Cannot download dependency file from Backblaze B2. Exit code: $real_exit_code\n";
         return 0;
     }
 
@@ -214,7 +214,7 @@ sub upload_binary_build_to_google_storage {
         system("s3cmd --disable-multipart  --host=storage.googleapis.com --host-bucket=\"%(bucket).storage.googleapis.com\" put /tmp/$dependency_archive_name $binary_path");
 
     if ($upload_this_file != 0) {
-        print "Cannot upload dependency file to /tmp/$dependency_archive_name Google Storage\n";
+        print "Cannot upload dependency file to /tmp/$dependency_archive_name Backblaze B2\n";
         return '';
     }
 
