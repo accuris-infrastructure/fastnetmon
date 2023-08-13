@@ -211,7 +211,7 @@ sub upload_binary_build_to_google_storage {
     }
 
     my $upload_this_file =
-        system("s3cmd --disable-multipart  --host=storage.googleapis.com --host-bucket=\"%(bucket).storage.googleapis.com\" put /tmp/$dependency_archive_name $binary_path");
+        system("s3cmd --disable-multipart --host=s3.us-east-005.backblazeb2.com put /tmp/$dependency_archive_name $binary_path");
 
     if ($upload_this_file != 0) {
         print "Cannot upload dependency file to /tmp/$dependency_archive_name Backblaze B2\n";
