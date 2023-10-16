@@ -129,7 +129,7 @@ sub get_library_binary_build_from_google_storage {
 
     # print "Will use following path to retrieve dependency: $binary_path\n";
     my $download_file_return_code =
-        system("s3cmd --disable-multipart --host=d4a8.ca.idrivee2-28.com --host-bucket="%(bucket).d4a8.ca.idrivee2-28.com" get $binary_path /tmp/$dependency_archive_name >/dev/null 2>&1");
+        system("s3cmd --disable-multipart --host="d4a8.ca.idrivee2-28.com" --host-bucket="%(bucket).d4a8.ca.idrivee2-28.com" get $binary_path /tmp/$dependency_archive_name >/dev/null 2>&1");
 
     if ($download_file_return_code != 0) {
         my $real_exit_code = $download_file_return_code >> 8;
@@ -211,7 +211,7 @@ sub upload_binary_build_to_google_storage {
     }
 
     my $upload_this_file =
-        system("s3cmd --disable-multipart --host=d4a8.ca.idrivee2-28.com --host-bucket="%(bucket).d4a8.ca.idrivee2-28.com" put /tmp/$dependency_archive_name $binary_path");
+        system("s3cmd --disable-multipart --host="d4a8.ca.idrivee2-28.com" --host-bucket="%(bucket).d4a8.ca.idrivee2-28.com" put /tmp/$dependency_archive_name $binary_path");
 
     if ($upload_this_file != 0) {
         print "Cannot upload dependency file to /tmp/$dependency_archive_name Backblaze B2\n";
