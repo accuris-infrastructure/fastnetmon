@@ -47,6 +47,7 @@ SOFTWARE.
 #include <cstddef> // nullptr_t, ptrdiff_t, size_t
 #include <functional> // hash, less
 #include <initializer_list> // initializer_list
+#include <iomanip>
 #ifndef JSON_NO_IO
     #include <iosfwd> // istream, ostream
 #endif  // JSON_NO_IO
