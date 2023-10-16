@@ -134,7 +134,7 @@ sub get_library_binary_build_from_google_storage {
     if ($download_file_return_code != 0) {
         my $real_exit_code = $download_file_return_code >> 8;
 
-        print "Cannot download dependency file from Backblaze B2. Exit code: $real_exit_code\n";
+        print "Cannot download dependency file from iDrive E2. Exit code: $real_exit_code\n";
         return 0;
     }
 
@@ -214,7 +214,7 @@ sub upload_binary_build_to_google_storage {
         system("s3cmd --disable-multipart  --host=d4a8.ca.idrivee2-28.com --host-bucket=\"%(bucket).d4a8.ca.idrivee2-28.com\" put /tmp/$dependency_archive_name $binary_path");
 
     if ($upload_this_file != 0) {
-        print "Cannot upload dependency file to /tmp/$dependency_archive_name Backblaze B2\n";
+        print "Cannot upload dependency file to /tmp/$dependency_archive_name iDrive E2\n";
         return '';
     }
 
