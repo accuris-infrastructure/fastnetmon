@@ -20,11 +20,11 @@ include(CheckLibraryExists)
 
 set (FASTNETMON_VERSION_MAJOR 1)
 set (FASTNETMON_VERSION_MINOR 2)
-set (FASTNETMON_VERSION_PATCH 6)
+set (FASTNETMON_VERSION_PATCH 7)
 
 set(HIREDIS_CUSTOM_INSTALL_PATH "${FASTNETMON_LIBRARIES_GLOBAL_PATH}/hiredis_0_14")
 set(LOG4CPP_CUSTOM_INSTALL_PATH "${FASTNETMON_LIBRARIES_GLOBAL_PATH}/log4cpp_1_1_4")
-# set(LIBPCAP_CUSTOM_INSTALL_PATH "${FASTNETMON_LIBRARIES_GLOBAL_PATH}/pcap_1.7.4")
+set(LIBPCAP_CUSTOM_INSTALL_PATH "${FASTNETMON_LIBRARIES_GLOBAL_PATH}/pcap_1_10_4")
 set(MONGO_C_CUSTOM_INSTALL_PATH "${FASTNETMON_LIBRARIES_GLOBAL_PATH}/mongo_c_driver_1_23_0")
 set(CAPNP_CUSTOM_INSTALL_PATH "${FASTNETMON_LIBRARIES_GLOBAL_PATH}/capnproto_0_8_0")
 set(OPENSSL_CUSTOM_INSTALL_PATH "${FASTNETMON_LIBRARIES_GLOBAL_PATH}/openssl_1_1_1q")
@@ -138,6 +138,8 @@ if (DO_NOT_USE_SYSTEM_LIBRARIES_FOR_BUILD)
 
     SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${LIB_CPP_KAFKA_INSTALL_PATH}/lib")
     SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${LIB_RDKAFKA_INSTALL_PATH}/lib")
+
+    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${LIBPCAP_CUSTOM_INSTALL_PATH}/lib")
 else()
    # We do not need any RPATH alterations when we want to link with system libraries (i.e. upstream builds for Debian or RedHat family)
 endif()
@@ -459,6 +461,19 @@ if (ENABLE_LIBBPF_SUPPORT)
 
 endif()
 
+### Look for libpcap
+
+find_path(LIBPCAP_INCLUDES_FOLDER NAMES pcap.h PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/include" ${DISABLE_DEFAULT_PATH_SEARCH_VAR})
+
+find_library(LIBPCAP_LIBRARY_PATH NAMES pcap PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/lib" ${DISABLE_DEFAULT_PATH_SEARCH_VAR})
+
+if (LIBPCAP_INCLUDES_FOLDER AND LIBPCAP_LIBRARY_PATH)
+    message(STATUS "We found pcap library ${LIBPCAP_LIBRARY_PATH}")
+
+    include_directories(${LIBPCAP_INCLUDES_FOLDER})
+else()
+    message(FATAL_ERROR "We can't find pcap library")
+endif()
 
 
 if (ENABLE_AF_XDP_SUPPORT)
@@ -502,7 +517,7 @@ target_link_libraries(netflow_plugin ipfix_rfc netflow netflow_template)
 if (ENABLE_PCAP_SUPPORT) 
   # pcap plugin
   add_library(pcap_plugin STATIC pcap_plugin/pcap_collector.cpp)
-  target_link_libraries(pcap_plugin pcap)
+  target_link_libraries(pcap_plugin ${LIBPCAP_LIBRARY_PATH})
 endif()
 
 find_package(Threads)
@@ -871,20 +886,6 @@ if (ENABLE_MONGODB_SUPPORT)
     endif()
 
 endif()
-
-### Look for libpcap
-
-#find_path(LIBPCAP_INCLUDES_FOLDER NAMES pcap.h PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/include" ${DISABLE_DEFAULT_PATH_SEARCH_VAR})
-
-#find_library(LIBPCAP_LIBRARY_PATH NAMES pcap PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/lib" ${DISABLE_DEFAULT_PATH_SEARCH_VAR})
-
-#if (LIBPCAP_INCLUDES_FOLDER AND LIBPCAP_LIBRARY_PATH) 
-#    message(STATUS "We found pcap library ${LIBPCAP_LIBRARY_PATH}")
-
-#    include_directories(${LIBPCAP_INCLUDES_FOLDER})
-#else()
-#    message(FATAL_ERROR "We can't find pcap library")    
-#endif()
 
 ### Look for log4cpp
 
