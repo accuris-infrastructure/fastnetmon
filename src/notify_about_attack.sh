@@ -11,7 +11,7 @@
 
 email_notify="please_fix_this_email@domain.com"
 
-# For ban and attack_details actions we will receive attack details to stdin
+# For ban action we will receive attack details to stdin
 # Please do not remove "cat" command because
 # FastNetMon will crash in this case as it expects read of data from script side
 #
@@ -19,7 +19,7 @@ email_notify="please_fix_this_email@domain.com"
 if [ "$4" = "ban" ]; then
     # This action receives multiple statistics about attack's performance and attack's sample to stdin
 
-    cat | mail -s "FastNetMon Guard: IP $1 blocked because $2 attack with power $3 pps" $email_notify;
+    cat | mail -s "FastNetMon Community: IP $1 blocked because $2 attack with power $3 pps" $email_notify;
     
     # Please add actions to run when we ban host
     exit 0
