@@ -412,11 +412,7 @@ workflows:
       #     name: "Debian Sid Upstream Build"
       #     debian_codename: "sid"
       #     docker_image: "debian:bookworm"
-<<<<<<< HEAD
       # To offer great developer experience we ensure that FastNetMon can be built on latest Ubuntu LTS
-=======
-      # To offer great developer experience we ensure that FastNetMon can be built on latest Ubuntu LTS 
->>>>>>> 76a6026dbb3a116685848f89ed441cdbbecd385e
       - build_debian_system_dependencies:
           docker_image: "ubuntu:jammy"
           name: "ubuntu2204_system_dependencies"
