@@ -1,5 +1,6 @@
 #include "fast_library.hpp"
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 
 // Windows does not use ioctl
