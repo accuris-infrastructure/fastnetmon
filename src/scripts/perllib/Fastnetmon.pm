@@ -1072,7 +1072,7 @@ sub install_abseil {
     # https://github.com/abseil/abseil-cpp/pull/741
     # -DCMAKE_POSITION_INDEPENDENT_CODE=true
     my $res = install_cmake_based_software("https://github.com/accuris-infrastructure/abseil-cpp/archive/refs/heads/lts_2022_06_23.tar.gz",
-        "255517d673694be49750c0ea5efc164d5c80ebfb",
+        "2172e3fa3486cef2539d5d73f4d8f5e61fdb41c7",
         "$library_install_folder/$folder_name",
         "$ld_library_path_for_make $cmake_path -DCMAKE_C_COMPILER=$default_c_compiler_path -DCMAKE_CXX_COMPILER=$default_cpp_compiler_path -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON -DABSL_ENABLE_INSTALL=ON -DCMAKE_CXX_STANDARD=11 -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$install_path ..");
 
