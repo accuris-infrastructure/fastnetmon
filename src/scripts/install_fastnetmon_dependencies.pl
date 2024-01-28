@@ -401,12 +401,12 @@ sub main {
             'centos:aarch64:9'    => '',
 
             'debian:9'            => '',
-            'debian:10'           => '',
+            'debian:10'           => '6f3568e19e6612a4b250e8ee0aadca04b45ce239b669b4d1abcd8d7613e9579df532877ec18396de5b7aa872610af0141ee358d4e4572d1fb6c71f18d6b4959e',
             
-            'debian:11'           => '',
+            'debian:11'           => 'a379bd91f97ac683f2e989473b77357630ac72b5e0eb00cd5c983d4c2aba653337ecd3f12c14ded3db667f14878364255e2159dc968963968328e1ff22669311',
             'debian:aarch64:11'   => '',
 
-            'debian:12' => '',
+            'debian:12' => 'f1170c74f8fd0f0425e2fb63039280054aba0b493c36730ea4bddfd8ff5dbc12469281db1b9c3c7b5c9a215498976ff3f541424792d07b0108b3d9ff09bcfe60',
             'debian:aarch64:12' => '',
 
             'ubuntu:16.04'        => '',
