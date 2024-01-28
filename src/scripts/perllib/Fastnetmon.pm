@@ -1071,8 +1071,8 @@ sub install_abseil {
     # We need explicitly enable PIC to successfully build against gRPC
     # https://github.com/abseil/abseil-cpp/pull/741
     # -DCMAKE_POSITION_INDEPENDENT_CODE=true
-    my $res = install_cmake_based_software("https://github.com/abseil/abseil-cpp/archive/refs/tags/20220623.0.tar.gz",
-        "144c2108e1532c642cdb6ca532ee26e91146cf28",
+    my $res = install_cmake_based_software("https://github.com/accuris-infrastructure/abseil-cpp/archive/refs/heads/lts_2022_06_23.tar.gz",
+        "255517d673694be49750c0ea5efc164d5c80ebfb",
         "$library_install_folder/$folder_name",
         "$ld_library_path_for_make $cmake_path -DCMAKE_C_COMPILER=$default_c_compiler_path -DCMAKE_CXX_COMPILER=$default_cpp_compiler_path -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON -DABSL_ENABLE_INSTALL=ON -DCMAKE_CXX_STANDARD=11 -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$install_path ..");
 
