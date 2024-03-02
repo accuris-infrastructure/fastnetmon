@@ -324,7 +324,7 @@ void print_attack_details_to_file(const std::string& details, const std::string&
 
     // TODO: it may not work well with systems which do not allow ":" as part of file name (macOS)
     std::string ban_timestamp_as_string = print_time_t_in_fastnetmon_format(current_attack.ban_timestamp);
-
+    
     std::string attack_dump_path =
         fastnetmon_platform_configuration.attack_details_folder + "/" + client_ip_as_string + "_" + ban_timestamp_as_string + ".txt";
 

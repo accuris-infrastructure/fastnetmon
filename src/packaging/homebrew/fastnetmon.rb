@@ -88,3 +88,4 @@ class Fastnetmon < Formula
     Process.kill "SIGTERM", fastnetmon_pid
   end
 end
+
