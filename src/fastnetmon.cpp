@@ -157,9 +157,6 @@ unsigned int stats_thread_initial_call_delay = 30;
 
 std::string reporting_server = "community-stats.fastnetmon.com";
 
-// Path to temporarily store backtrace when fatal failure happened
-std::string backtrace_path = "/var/log/fastnetmon_backtrace.dump";
-
 // Each this seconds we will check about available data in bucket
 unsigned int check_for_availible_for_processing_packets_buckets = 1;
 
@@ -238,6 +235,8 @@ bool monitor_openvz_vps_ip_addresses = false;
 
 // We will announce whole subnet instead single IP with BGP if this flag enabled
 bool exabgp_announce_whole_subnet = false;
+
+std::string exabgp_command_pipe = "";
 
 // We will announce only /32 host
 bool exabgp_announce_host = false;
@@ -423,7 +422,6 @@ std::string exabgp_community_subnet = "";
 std::string exabgp_community_host   = "";
 
 
-std::string exabgp_command_pipe = "/var/run/exabgp.cmd";
 std::string exabgp_next_hop     = "";
 
 // Graphite monitoring
@@ -1519,7 +1517,7 @@ void redirect_fds() {
 // Handles fatal failure of FastNetMon's daemon
 void fatal_signal_handler(int signum) {
     ::signal(signum, SIG_DFL);
-    boost::stacktrace::safe_dump_to(backtrace_path.c_str());
+    boost::stacktrace::safe_dump_to(fastnetmon_platform_configuration.backtrace_path.c_str());
     ::raise(SIGABRT);
 }
 
@@ -1650,9 +1648,9 @@ int main(int argc, char** argv) {
 
     init_logging(log_to_console);
 
-    if (std::filesystem::exists(backtrace_path)) {
+    if (std::filesystem::exists(fastnetmon_platform_configuration.backtrace_path)) {
         // there is a backtrace
-        std::ifstream ifs(backtrace_path);
+        std::ifstream ifs(fastnetmon_platform_configuration.backtrace_path);
 
         boost::stacktrace::stacktrace st = boost::stacktrace::stacktrace::from_dump(ifs);
         logger << log4cpp::Priority::ERROR << "Previous run crashed, you can find stack trace below";
@@ -1660,7 +1658,7 @@ int main(int argc, char** argv) {
 
         // cleaning up
         ifs.close();
-        std::filesystem::remove(backtrace_path);
+        std::filesystem::remove(fastnetmon_platform_configuration.backtrace_path);
     }
 
 #ifdef FASTNETMON_API

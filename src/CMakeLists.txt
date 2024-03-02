@@ -181,6 +181,31 @@ execute_process(COMMAND git rev-list HEAD COMMAND head -n 1 COMMAND cut -c1-8 OU
 message(STATUS "Commit hash: ${GIT_LAST_COMMIT_HASH_SHORT}")
 
 set(FASTNETMON_APPLICATION_VERSION "${FASTNETMON_VERSION_MAJOR}.${FASTNETMON_VERSION_MINOR}.${FASTNETMON_VERSION_PATCH} ${GIT_LAST_COMMIT_HASH_SHORT}")
+
+# Set standard values which work for majority of platforms
+set(FASTNETMON_PID_PATH "/var/run/fastnetmon.pid")
+set(FASTNETMON_CONFIGURATION_PATH "/etc/fastnetmon.conf")
+set(FASTNETMON_LOG_FILE_PATH "/var/log/fastnetmon.log")
+set(FASTNETMON_ATTACK_DETAILS_FOLDER "/var/log/fastnetmon_attacks")
+set(FASTNETMON_NOTIFY_SCRIPT_PATH_DEFAULT "/usr/local/bin/notify_about_attack.sh")
+set(FASTNETMON_NETWORK_WHITELIST_PATH "/etc/networks_whitelist")
+set(FASTNETMON_NETWORKS_LIST_PATH "/etc/networks_list")
+set(FASTNETMON_BACKTRACE_PATH "/var/log/fastnetmon_backtrace.dump")
+
+# For FreeBSD based platforms we need to adjust them
+if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD" OR ${CMAKE_SYSTEM_NAME} STREQUAL "DragonFly")
+  set(FREEBSD_DEFAULT_PREFIX "/usr/local")
+
+  set(FASTNETMON_PID_PATH "/var/run/fastnetmon/fastnetmon.pid")
+  set(FASTNETMON_CONFIGURATION_PATH "${FREEBSD_DEFAULT_PREFIX}/etc/fastnetmon.conf")
+  set(FASTNETMON_LOG_FILE_PATH "/var/log/fastnetmon/fastnetmon.log")
+  set(FASTNETMON_ATTACK_DETAILS_FOLDER "/var/log/fastnetmon_attacks")
+  set(FASTNETMON_NOTIFY_SCRIPT_PATH_DEFAULT "${FREEBSD_DEFAULT_PREFIX}/bin/notify_about_attack.sh")
+  set(FASTNETMON_NETWORK_WHITELIST_PATH "${FREEBSD_DEFAULT_PREFIX}/etc/networks_whitelist")
+  set(FASTNETMON_NETWORKS_LIST_PATH "${FREEBSD_DEFAULT_PREFIX}/etc/networks_list")
+  set(FASTNETMON_BACKTRACE_PATH "/var/log/fastnetmon/fastnetmon_backtrace.dump")
+endif()
+
 configure_file(fast_platform.h.template "${PROJECT_SOURCE_DIR}/fast_platform.hpp")
 
 # Use new Memory Model Aware Atomic Operations
@@ -594,26 +619,26 @@ if (ENABLE_GOBGP_SUPPORT)
         target_link_libraries(gobgp_action absl::base absl::synchronization)
     endif()
 
-    # By default use module supplied by cmake to search for Protobuf 
-    set(FIND_PACKAGE_MODE_PROTOBUF "MODULE")
-
     if (DO_NOT_USE_SYSTEM_LIBRARIES_FOR_BUILD)
       # We add our custom path to Protobuf to top of search_list used by find_package: https://cmake.org/cmake/help/latest/variable/CMAKE_PREFIX_PATH.html
       # This approach has advantage over Protobuf_DIR which requires us to set direct path to cmake folder of custom built dependency
       # which resides in vendor specific folder with name lib which may be lib64 on CentOS platforms:
       # protobuf_21_12/lib/cmake/protobuf or  protobuf_21_12/lib64/cmake/protobuf on CentOS 
       list(APPEND CMAKE_PREFIX_PATH ${PROTOCOL_BUFFERS_CUSTOM_INSTALL_PATH}) 
-
-      # Switch to use to configuration supplied by custom Protobuf installation as it may be better
-      set(FIND_PACKAGE_MODE_PROTOBUF "CONFIG")
-
-      # Apparently it's required to set this flag because without this flag set it cannot find protoc when custom library path is in use
-      # https://github.com/protocolbuffers/protobuf/issues/1931
-      set(protobuf_MODULE_COMPATIBLE true)
     endif()
 
-    # https://cmake.org/cmake/help/latest/module/FindProtobuf.html
-    find_package(Protobuf ${FIND_PACKAGE_MODE_PROTOBUF} REQUIRED)
+    # Apparently it's required to set this flag because without this flag set it cannot find protoc when custom library path is in use
+    # https://github.com/protocolbuffers/protobuf/issues/1931
+    set(protobuf_MODULE_COMPATIBLE true)
+
+    # Switch to use to configuration supplied by custom Protobuf installation as it may be better
+    find_package(Protobuf CONFIG)
+
+    if (NOT Protobuf_FOUND)
+      # Fall back to module supplied by cmake to search for Protobuf
+      # https://cmake.org/cmake/help/latest/module/FindProtobuf.html
+      find_package(Protobuf MODULE REQUIRED)
+    endif()
 
     if (Protobuf_FOUND)
       message(STATUS "Found Protobuf ${Protobuf_VERSION}")
