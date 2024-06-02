@@ -124,6 +124,8 @@ sub main {
     # To guarantee that binary dependencies are not altered in storage side we store their hashes in repository
     my $binary_build_hashes = { 
         'gcc_12_1_0' => {
+            'ubuntu:aarch64:24.04' => '',
+
             'debian:10'           => '3a6b4da54c77494bfb42e3ca43076496a454567165423bdb93b24507a8c24d962b2319dbfb2a1611e18e349d408d355dc268aee4806b38f80fb7dafde5f777c7',
             
             'debian:11'           => '88606df69a5517de10fb6489b29fc3856c428508e60554cd906315f24aa72ed2ee1094968f6831faf976d8159e1167af9d7cbfdee659513e1fce9304a95aa6d6',
@@ -150,6 +152,7 @@ sub main {
             'centos:aarch64:9'    => '49960a76af5580b6b43361d434ac989b04224b1f6d6fe30585f8707791c4a254ed9f2fdda24b18dc3ade7100f252abf845a70dbc6726d32cafb051f5df61d95a',
         },
         'openssl_1_1_1q'        => {
+            'ubuntu:aarch64:24.04'=> '',
             'centos:7'            => '0b1183155b4ef1a9e9b6085f45fbc30f9acb71aa7fffaed37a56846a40fee58cc079bedfb5d229484747186311c21d3c6576402ea624dd5d9e464cf6eee8cd93',
             
             'centos:8'            => 'd3120d481d2bb46f403d7538bda5b3eadf1a36f1fa4f532b696857d73a8e930bcefd9844b8f44d180ab4af5182ee056914594ff919acfdca2af88a63fac19b74',
@@ -176,6 +179,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> 'f2869545a9fadb5bfb9dcdc3f834f93df0135c908b5e9b77ed5a964c709397a26b9a2d3570646578ca5b6aa35340c58ddf7cc717f786d39d91d268ccffe88985',
         }, 
         'cmake_3_23_4'          => {
+            'ubuntu:aarch64:24.04' => '',
             'centos:7'            => 'acd98ba5af2e41ed4cc8a48770495924fdadab0858a733b520c776a80ab399aba59986f63a1540fb05d34239da08bbcbbc3cfee5edf8c0711aa53915ba9ede9f',
             
             'centos:8'            => 'f33203e47aa325ca9de5944ef505401dcd034511085ed966abfc1acff7e27dd15984e557e37d60aa855a7108d3ad0a04dac9a480597c22eb2be87dd7de2873c3',
@@ -202,6 +206,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> '7e7725a0580a41353d4ab9824b2e063b9f69723a90e5fe50aa1a340c1b72cbc43bf038a1358d2c3bada3e19e5dcbedc5eed38f6e22fb76be22162e05be21502d',
         },
         'boost_build_4_9_2'     => {
+            'ubuntu:aarch64:24.04' => '',
             'centos:7'            => '65f6d3d97f53aa25ab2534ee20df47dfd8eec4a672dd324d24249e5b1a484642cccde759b228d0cd13c0e3c733a651940c30e172fb3254f99fc98aefad5188f0',
             
             'centos:8'            => 'eadafc426d81b8ba49ea6b0b598a4dd859b80dcc68ed65b1db70bd6a0d08129730e2b67306ffacf232b9523ebddef3ee40775665cc285e96dbfe8e2db33a3d50',
@@ -228,6 +233,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> '38737f09237a25d7185d1e603a293bb416b97f7312e0c47ffe7ee438cdf1bb630ca06133c183948667fc3c40346ab5239b92440762274b8529df7d79b2d659b8',
         },
         'icu_65_1'              => {
+            'ubuntu:aarch64:24.04'=> '',
             'centos:7'            => '2fe334ebe9cd535e0ac4878f3111d2944544acae35a6135c49210fa1614dc21b2ef416434362e9e66d0cff0f805caa1850244f0683a9bb036c5b956544bc4914',
             
             'centos:8'            => '055629f72b39ff3b7b5ec01a4d140227055482888df0be455e3a861a86c81e0b5be9f9fbf379e1a2647bd4d042210036f9b505891ae7324f6696f811abeea35d',
@@ -253,6 +259,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> '0c52f6a38fbdd7fcb45bea0ab5aff7b913445a79a6b08af84b7ae657ba80573e75c110bc600ab96d5afe42595dd3e786b4dd12268e7ab8cef8214dbb2eeac0f6',
         },
         'boost_1_81_0'          => {
+            'ubuntu:aarch64:24.04' => '',
             'centos:7'            => '0ff852d4dc0960796a292211458f7dd129e2ad38cf8b4eac82be49485235f4c0c87d2fcc6c766b784cde9ab2a0af017303741cbdac8a7ac1d2b1749641fbf8df',
             
             'centos:8'            => 'a973378ca78e826624b06d8171688ca83edb91375ed933b500d0ab0387ccfd162b855012f6beda904614ed2524066b920020000dc0c3185042692ad406268b35',
@@ -279,6 +286,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> '89fed9131b1ac03f287bb3475328a5321fbf20aec574e6bf5def87fb26921f5ed65f4c9e87ba786ccb4a725ef9e9047c9775e61155a72f64f91d65d08a838bee',
         },
         'capnproto_0_8_0'       => {
+            'ubuntu:aarch64:24.04'=> '',
             'centos:7'            => '357c7b7bee86efe9ef1add35157202b72b6701c92ae035ff28e5d3a50705b1f4a6edc5d4903c65c1965173d044c21167559c3687ca4fae00b875aa261d452dc5',
             
             'centos:8'            => '20889ee963bf4d745e4349d5933c49dd989268e6c56cf2cf82bfec3b0f9c8cf1c5dbcfb3c82ee5181a919ba4ff398be9e8683398893e82f1a507665581092f0f',
@@ -305,6 +313,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> 'e6dcbb3706e383d69ef4ecb1317ae9de618442ddf6a9ed1f14636dfb00f5a7ffe541253b0734b693446ac0886c9b478cf54e52a2b1f51d9761c3e5fcd82a1494',
         },
         'hiredis_0_14'          => {
+            'ubuntu:aarch64:24.04'=> '',
             'centos:7'            => 'af7510adbcc09059968b1e2a6d46d149706c57777861bc296fbd733a4f1f4e3913431eba75d6ce2fedfcd555f8d3270e0fc0305cd039771b5832a6d8db23106e',
             
             'centos:8'            => 'ad80fd9c0ec9f7e66c4f1ef2304d27bee1b45472c43510f02530c188231d94541d1af09339bdf260b6ebee29822f8b6f5a6d45cf30c99a3897b85914e81fc178',
@@ -331,6 +340,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> 'a7ddbd244e34ccb957af554420cc36f54a8d9f1304be1e3e8f8b72d89fc6c96f3fc8b2fda94447cb35a61a6bfa804c8eeb39b3f8b6d9cbc606df11f654eb4706',
         },
         'mongo_c_driver_1_23_0' => {
+            'ubuntu:aarch64:24.04'=> '',
             'centos:7'            => 'f93ce5925d7e0f9992694ab40e9a30a5f2ab38a38c0500707a40ae77d3b9e4820cad9971b7e985de3253cb27b3d5761e0f7403aea8a445a88c22fa0e4a2eb707',
             
             'centos:8'            => 'd34c1c529ac5bbe9b22c398449272b0d019fa0cabd2d6e2b5a72f0c753d8910cdf2e3781e5e308c4ba2a144fa5fa7e1bc4a77e8f69d62aae3a54fdabe4c4644b',
@@ -356,6 +366,7 @@ sub main {
             'ubuntu:aarch64:22.04'=> '5d3db587667941f9b77dfff83b4f839bb51aed47d2a927d93c36c5186c49112013bd93240924cfc48c4da60d196d50a6fb0c613622c2e09dd760aa63a356bbb2',
         },
         're2_2022_12_01'        => {
+            'ubuntu:aarch64:24.04'=> '',
             'centos:7'            => 'e87055e3e686df904e70e05f135b1c2bda614d9d9ec55382569265e4499a0c0d49f82ed4f7d709abca8b2cced187679f7b9864ea4ec27d00623b8d03cd146fd7',
             
             'centos:8'            => '42c7ad8069ce4f3b63d3fa3f0d90024aee0760842d24038b11a75bfe4b7c05d619a8f304aba17f88d868427352cf756d6444c3bfb27ae61943cab38fcd4f0ec7',
@@ -713,6 +724,7 @@ sub main {
             'centos:aarch64:9'    => '97823fa105bdab03372f0533db18698d02aa63289c9bb3267d77325c1ba92e95a5bdc44c2a9e72b446bd552d30fa551def307f098e5e09a05628091653c5e68e',
         },
         'pcap_1_10_4' => {
+            'ubuntu:aarch64:24.04'=> '',
             'centos:7'            => 'a62075ea4c5ec3d4a758152ebd589023bdcf30f348dd4bd7576f2f5b7da51801e456f2d15ec4d782edad5e6f939c8119f6eb1b1c165314e8e1f2cf8791e7cbe1',
 
             'centos:8'            => 'c7aa10be977d84d81ed9823df4ddd86bd2b50f8311dc9d0bb849d3bf99e45ec2eb6372e6d328d063100f630d31adc4f1dc9aca792bfcc4498b5908298647bb64',
